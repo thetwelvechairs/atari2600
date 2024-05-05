@@ -27,7 +27,7 @@ Start	CLEAN_START
 NextFrame
 ; Enable VBLANK (disable output)
 	lda #2
-    sta VBLANK
+    	sta VBLANK
 ; At the beginning of the frame we set the VSYNC bit...
 	lda #2
 	sta VSYNC
@@ -38,23 +38,24 @@ NextFrame
 ; Now we turn VSYNC off.
 	lda #0
 	sta VSYNC
-
 ; Now we need 37 lines of VBLANK...
 	ldx #37
+
 LVBlank	
-    sta WSYNC	; accessing WSYNC stops the CPU until next scanline
+    	sta WSYNC	; accessing WSYNC stops the CPU until next scanline
 	dex		; decrement X
 	bne LVBlank	; loop until X == 0
 
 ; Re-enable output (disable VBLANK)
 	lda #0
-    sta VBLANK
+    	sta VBLANK
 ; 192 scanlines are visible
 ; We'll draw some rainbows
 	ldx #192
 	lda BGColor	; load the background color out of RAM
+
 ScanLoop
-	adc #		; add 1 to the current background color in A
+	adc #1		; add 1 to the current background color in A
 	sta COLUBK	; set the background color
 	sta WSYNC	; WSYNC doesn't care what value is stored
 	dex
@@ -62,11 +63,12 @@ ScanLoop
 
 ; Enable VBLANK again
 	lda #2
-    sta VBLANK
+    	sta VBLANK
 ; 30 lines of overscan to complete the frame
 	ldx #30
+
 LVOver	
-    sta WSYNC
+    	sta WSYNC
 	dex
 	bne LVOver
 	
